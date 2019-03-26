@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from capsules import margin_loss
 
-def train(model, data, architecture, batch_size=64, num_batches=128, epochs=None, lr=1e-3, zeta=0.5):
+def train(model, data, architecture=None, batch_size=64, num_batches=128, epochs=None, lr=1e-3, zeta=0.5):
     
     #unpack data
     (x_train, y_train), (x_val, y_val), (x_test, y_test) = data
@@ -49,21 +49,23 @@ def train(model, data, architecture, batch_size=64, num_batches=128, epochs=None
                 
         #end weights training, begin architecture training
         
+
         start = int(start*0.2)
         end = int(end*0.2)
         x = x_val[start:end]
         y = y_val[start:end]
-        
+
         with tf.GradientTape() as tape:
             y_hat = model(x, architecture)
             v_loss = margin_loss(y, y_hat)
-            
+
         loss_library['val'].append(v_loss)
-            
-        a_grads = tape.gradient(v_loss, architecture)
-        new_arch = architecture - zeta*a_grads
-        architecture.assign(new_arch)
         
+        if architecture is not None:
+            a_grads = tape.gradient(v_loss, architecture)
+            new_arch = architecture - zeta*a_grads
+            architecture.assign(new_arch)
+
         
         print('.', end='')
         

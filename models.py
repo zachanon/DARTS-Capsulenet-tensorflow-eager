@@ -92,9 +92,9 @@ class DensePredictor(tf.keras.Model):
     
 class ConvModel(tf.keras.Model):
     
-    def __init__(self, N=5, hidden=128, num_class=10):
+    def __init__(self, N=5, channels=128, hidden=128, num_class=10):
         super(ConvModel, self).__init__()
-        self.conv = ConvolutionalBlock(N=N)
+        self.conv = ConvolutionalBlock(N=N, channels=channels)
         self.pred = DensePredictor(hidden=hidden, num_class=num_class)
 
     def call(self, x, a):
@@ -109,13 +109,13 @@ class CapsuleNet(tf.keras.Model):
     def __init__(self, dim_capsule, num_class=10):
         super(CapsuleNet, self).__init__()
         self.conv = tf.keras.layers.Conv2D(filters=256, kernel_size=9, activation=tf.nn.relu)
-        self.prim = tf.keras.layers.Conv2D(filters=8*32, kernel_size=9, strides=2)
+        self.prim = tf.keras.layers.Conv2D(filters=256, kernel_size=9, strides=2)
         self.reshape = tf.keras.layers.Reshape(target_shape=[-1, dim_capsule])
         self.squash = tf.keras.layers.Lambda(squash)
         self.caps = CapsuleLayer(num_class, dim_capsule, routings=3)
         self.pred = Length()
         
-    def call(self, x):
+    def call(self, x, *args):
         
         conv = self.conv(x)
         prim = self.prim(conv)
@@ -125,19 +125,3 @@ class CapsuleNet(tf.keras.Model):
         pred = self.pred(caps)
         
         return pred
-    
-class CapsuleModel(tf.keras.Model):
-    def __init__(self, N=5, dim_capsule=16, num_class=10):
-        super(CapsuleModel, self).__init__()
-        self.conv = ConvolutionalBlock(N=N)
-        self.caps = CapsuleBlock(dim_capsule=dim_capsule, num_capsule=num_class)
-        self.pred = Length()
-        
-    def call(self, x, a):
-        
-        conv = self.conv(x, a)
-        caps = self.caps(conv)
-        pred = self.pred(caps)
-        
-        return pred
-        
