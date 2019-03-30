@@ -14,7 +14,7 @@ class Zero(tf.keras.Model):
     def call(self, x):
         
         if x.shape[3] < NODE_CHANNELS:
-            tiled = tf.tile(x, multiples=(1,1,1,128))
+            tiled = tf.tile(x, multiples=(1,1,1, NODE_CHANNELS))
             zero = tf.zeros_like(tiled)
             return tiled
         
@@ -31,7 +31,7 @@ class Identity(tf.keras.Model):
     def call(self, x):
         
         if x.shape[3] < NODE_CHANNELS:
-            tiled = tf.tile(x, multiples=(1,1,1,128))
+            tiled = tf.tile(x, multiples=(1,1,1, NODE_CHANNELS))
             return tiled
         
         return x
@@ -59,25 +59,7 @@ class SeparableConvolution3x3(tf.keras.Model):
         
         return padded
     
-class StandardizingConvolution(tf.keras.Model):
-    """Reduces channel depth using a 1x1 convolution"""
-    
-    def __init__(self, filters=NODE_CHANNELS):
-        super(StandardizingConvolution, self).__init__()
-        self.conv = tf.keras.layers.SeparableConv2D(filters=filters,
-                                    kernel_size=1)
-        
-    def call(self, x):
-        out = self.conv(x)
-        return out
-    
 OPERATIONS = {
-    'identity': Identity,
-    'sep_conv_3x3': SeparableConvolution3x3,
-    'none': Zero,
-}
-
-CONV_OPS = {
     'identity': Identity,
     'sep_conv_3x3': SeparableConvolution3x3,
     'none': Zero,
@@ -97,11 +79,10 @@ class MixedOperation(tf.keras.Model):
         
         a = tf.nn.softmax(alpha)
         out = []
-        i = 0
-        for op in self.operations:
-            out.append(op(x) * a[i])
-            i+=1
+        
+        for op in range(len(self.operations)):
+            out.append(self.operations[op](x) * a[op])
             
-        summed = tf.math.add_n(out)
+        summed = tf.add_n(out)
         
         return summed
