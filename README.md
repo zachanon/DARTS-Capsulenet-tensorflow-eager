@@ -3,85 +3,15 @@
 Very simple implementation of the DARTS algorithm used to find an optimized CNN block to feed to the dynamic routing algorithm.
 
 
-## Getting Started
+## Notes
 
-Just clone and run the notebook.
-(Coming soon: argument parser so the notebook is unnecessary
+Project done while exploring Capsule Routing and DARTS algorithm, years ago now when both of these were quite new. DARTS since then has had many improvements made[1][2] so it's best to regard this repository as a historical example. As far as I know this was the earliest implementation of the DARTS algorithm in Tensorflow.
 
-### Prerequisites
+## Usage
 
-Requires numpy and tensorflow version 1.12+
-(only tested on 1.12.0)
+This repository can be conceptually divided into two segments. The DARTS algorithm[3] is used to create a 'feature extractor' which is fed into a Capsule Routing[4] system. If you would like to apply the DARTS optimization to find a feature extractor for a different general architecture, simply clone the operations.py file and the ConvolutionalBlock class found in models.py. If you would like to test the dynamic routing algorithm, the code is found in capsules.py and class CapsuleBlock in models.py. The code found in this repository has not been tested to confirm that it reaches convergence, only that gradients flow and losses decrease, so your milage may vary.
 
-
-(Readme unfinished)
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+[1]: https://arxiv.org/abs/1907.05737
+[2]: https://arxiv.org/abs/1909.06035
+[]: https://arxiv.org/abs/1806.09055
+[]: https://arxiv.org/abs/1710.09829 
