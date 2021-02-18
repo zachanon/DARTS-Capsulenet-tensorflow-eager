@@ -5,7 +5,7 @@ Very simple implementation of the DARTS algorithm used to find an optimized CNN 
 
 ## Notes
 
-Project done while exploring Capsule Routing and DARTS algorithm, years ago now when both of these were quite new. DARTS since then has had many improvements made[1][2] so it's best to regard this repository as a historical example. As far as I know this was the earliest implementation of the DARTS algorithm in Tensorflow.
+Project done while exploring Capsule Routing and DARTS algorithm, years ago now when both of these were quite new. DARTS since then has had many improvements made [1] [2] so it's best to regard this repository as a historical example. As far as I know this was the earliest implementation of the DARTS algorithm in Tensorflow.
 
 ## Usage
 
@@ -13,5 +13,5 @@ This repository can be conceptually divided into two segments. The DARTS algorit
 
 [1]: https://arxiv.org/abs/1907.05737
 [2]: https://arxiv.org/abs/1909.06035
-[]: https://arxiv.org/abs/1806.09055
-[]: https://arxiv.org/abs/1710.09829 
+[3]: https://arxiv.org/abs/1806.09055
+[4]: https://arxiv.org/abs/1710.09829 
